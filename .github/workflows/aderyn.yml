@@ -9,19 +9,17 @@ jobs:
       steps:
         - name: Checkout sources
           uses: actions/checkout@v2
-  
-        - name: Install stable toolchain
-          uses: actions-rs/toolchain@v1
-          with:
-            profile: minimal
-            toolchain: stable
-            override: true
-  
+
         - name: Install aderyn
-          run: cargo install aderyn
+          run: |
+            curl -L https://raw.githubusercontent.com/Cyfrin/aderyn/dev/cyfrinup/install | bash
+            source /home/runner/.bashrc
+            cyfrinup        
 
         - name: Run aderyn
-          run: aderyn . -o ci-report.json
+          run: |
+            export PATH="/home/runner/.cyfrin/bin:$PATH"
+            aderyn . -o ci-report.json
         
         - name: Check report
           run: |
@@ -31,4 +29,3 @@ jobs:
                 exit 1
                 fi
             done
-
